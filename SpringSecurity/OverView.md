@@ -9,7 +9,7 @@
 * 권한: 인증된 주체가 애플리케이션의 동작을 수행할 수 있도록 허락되었는지를 결정할 때 사용합니다.
 
 # 2.스프링 시큐리티 필터(Spring Security Filter)
-![Spring Security Filter](./images/Spring%20Security%20Filter.png)   
+![Spring Security Filter](/images/Spring%20Security%20Filter.png)   
 그림 출처 : https://youmekko.github.io/2018/04/26/2018-04-26-Filter/   
 
 클라이언트(보통 브라우저)는 요청을 보내게 되고, 그 요청을 서블릿이나 JSP등이 처리하게 됩니다.   
@@ -17,7 +17,7 @@
 
 먼저 스프링 시큐리티가 제공하는 필터들이 어떤 역할을 담당하는지 정리 해보겠습니다.   
 
-![Spring Security Filter](./images/SecurityFilterChain.png)   
+![Spring Security Filter](/images/SecurityFilterChain.png)   
 그림 출처 : https://atin.tistory.com/590   
 
 위 그림은 시큐리티 필터 체인과 각각의 필터에서 사용하는 객체들(Repository, Handler, Manager등)에 대해 잘 표현하고 있습니다.   
@@ -41,7 +41,7 @@
 아이디와 암호를 입력했을 때 이를 처리하는 필터는 AuthenticationFilter입니다.   
 해당 필터는 다음 그림과 같은 순서로 동작합니다.   
    
-![SpringSecurityArchitecture](images/SpringSecurityArchitecture.png)   
+![SpringSecurityArchitecture](/images/SpringSecurityArchitecture.png)   
 그림 출처: http://www.springbootdev.com   
 
 1. 클라이언트가(유저)가 로그인을 시도합니다.
