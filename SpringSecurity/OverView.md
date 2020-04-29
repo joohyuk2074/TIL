@@ -7,6 +7,7 @@
 * 인증(Authentication): 인증은 '증명하다'라는 의미로 예를 들어, 유저 아이디와 비밀번호를 이용하여 로그인 하는 과정을 말합니다.
 * 인가(Authorization): '권한부여'나 '허가'와 같은 의미로 사용됩니다. 즉, 어떤 대상이 특정 목적을 실현하도록 허용(Acees) 하는 것을 의미합니다.
 * 권한: 인증된 주체가 애플리케이션의 동작을 수행할 수 있도록 허락되었는지를 결정할 때 사용합니다.
+<br></br>
 
 # 2.스프링 시큐리티 필터(Spring Security Filter)
 ![Spring Security Filter](/images/Spring%20Security%20Filter.png)   
@@ -36,6 +37,7 @@
 * SessionManagementFilter: 이 필터는 인증된 사용자와 관련된 모든 세션을 추적한다.
 * ExceptionTransaltionFilter: 이 필터는 보호된 요청을 처리하는 중에 발생할 수 있는 예외를 위임하거나 전달하는 역할을 한다.
 * FilterSecurityInterceptor: 이 필터는  AccessDecisionManager로 권한 부여 처리를 위임함으로써 접근 제어 결정을 쉽게 해준다.
+<br></br>
 
 # 3. 스프링 시큐리티 인증관련 아키텍처
 아이디와 암호를 입력했을 때 이를 처리하는 필터는 AuthenticationFilter입니다.   
@@ -50,3 +52,6 @@
 4. 스프링 시큐리티는 인메모리 세션저장소인 SecurityContextHolder에 UserDetails정보를 저장하게 됩니다.
 5. 클라이언트(유저)에게 session ID(JSESSION ID)와 함께 응답을 하게 됩니다.
 6. 이후 요청에서는 요청 쿠키에서 JSESSION ID 정보를 통해 이미 로그인 정보가 저장되어 있는 지 확인합니다. 이미 저장되어 있고 유효하면 인증 처리를 해주게 됩니다.
+<br></br>
+
+참고자료: https://www.edwith.org/boostcourse-web-be/lecture/58997/
