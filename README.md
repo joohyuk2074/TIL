@@ -11,3 +11,4 @@
 ### Exception
 * [예외 처리](https://github.com/JooHyukGallagher/TIL/blob/master/Java/Exception/%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC.md)
 * [예외클래스](https://github.com/JooHyukGallagher/TIL/blob/master/Java/Exception/%EC%98%88%EC%99%B8%20%ED%81%B4%EB%9E%98%EC%8A%A4.md)
+* [예외 발생 및 회피](https://github.com/JooHyukGallagher/TIL/blob/master/Java/Exception/%EC%98%88%EC%99%B8%20%EB%B0%9C%EC%83%9D%20%EB%B0%8F%20%ED%9A%8C%ED%94%BC.md)
