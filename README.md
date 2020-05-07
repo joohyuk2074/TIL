@@ -6,6 +6,7 @@
 ## SpringSecurity
 * [SpringSecurity개요](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/OverView.md)
 * [CSRF](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/CSRF.md)
+* [세션이 만료시 로그인 유지 방법](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/Improved%20Persistent%20Login%20Cookie%20Best%20Practice.md)
 
 ## JAVA
 ### Exception
