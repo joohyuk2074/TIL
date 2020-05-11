@@ -3,6 +3,8 @@
 [김남준](https://github.com/namjunemy/TIL)님의 Github TIL에 영감을 받았다.
 
 # 분류
+## Spring MVC
+* [인터셉터(Interceptor)](https://github.com/JooHyukGallagher/TIL/blob/master/Spring%20MVC/Interceptor.md)
 ## SpringSecurity
 * [SpringSecurity개요](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/OverView.md)
 * [CSRF](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/CSRF.md)
