@@ -6,7 +6,8 @@
 ## Spring MVC
 * [인터셉터(Interceptor)](https://github.com/JooHyukGallagher/TIL/blob/master/Spring%20MVC/Interceptor.md)
 ## SpringSecurity
-* [SpringSecurity개요](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/OverView.md)
+* [01.SpringSecurity개요](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/01.%20SpringSecurity%20%EA%B0%9C%EC%9A%94.md)
+* [02.SpringSecurity 설정하기](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/02.%20SpringSecurity%20%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0.md)
 * [CSRF](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/CSRF.md)
 * [세션이 만료시 로그인 유지 방법](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/Improved%20Persistent%20Login%20Cookie%20Best%20Practice.md)
 
