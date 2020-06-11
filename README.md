@@ -9,6 +9,7 @@
 * [01.SpringSecurity개요](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/01.%20SpringSecurity%20%EA%B0%9C%EC%9A%94.md)
 * [02.SpringSecurity 설정하기](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/02.%20SpringSecurity%20%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0.md)
 * [03. SpringSecurity를 이용한 로그인 하기](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/03.%20Spring%20Security%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%95%98%EA%B8%B0.md)
+* [04. Spring Security db정보를 이용하여 로그인하기](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/04.%20Spring%20Security%20db%EC%A0%95%EB%B3%B4%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%ED%95%98%EA%B8%B0.md)
 * [CSRF](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/CSRF.md)
 * [세션이 만료시 로그인 유지 방법](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/Improved%20Persistent%20Login%20Cookie%20Best%20Practice.md)
 
