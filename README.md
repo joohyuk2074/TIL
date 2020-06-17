@@ -32,3 +32,5 @@
 ## 개발관력 서적
 ### 객체지향의 사실과 오해
 * [01. 협력하는 객체들의 공동체](https://github.com/JooHyukGallagher/TIL/blob/master/books/The%20Essence%20of%20Object-Orientation/Chapter01.md)
+### Clean Code
+* [요약](https://github.com/JooHyukGallagher/TIL/blob/master/books/CleanCode/summary.md)
