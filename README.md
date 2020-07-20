@@ -18,6 +18,10 @@
 - [CSRF](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/CSRF.md)
 - [세션이 만료시 로그인 유지 방법](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/Improved%20Persistent%20Login%20Cookie%20Best%20Practice.md)
 
+## JPA&Hibernate
+
+- [API 성능 최적화](https://github.com/weekbelt/TIL/blob/master/JPA%26Hibernate/API%20%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94.md)
+
 ## JAVA
 
 ### Exception
