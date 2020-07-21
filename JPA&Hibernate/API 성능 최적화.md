@@ -64,7 +64,7 @@ public class MemberApiController {
 
   참고 : 실무에서는 엔티티를 API 스펙에 노출하면 안된다!
 
-참고 강의:[실전! 스프링 부트와 JPA 활용2 - API 개발과 성능 최적화](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-API%EA%B0%9C%EB%B0%9C-%EC%84%B1%EB%8A%A5%EC%B5%9C%EC%A0%81%ED%99%94/dashboard)
+<hr>
 
 ## 회원 수정 API
 
@@ -112,3 +112,47 @@ public class MemberService {
 
 ```
 * 변경 감지를 사용해서 데이터를 수정
+
+<hr>
+
+## 회원 조회 API
+
+### 회원조회 V1: 응답 값으로 엔티티를 직접 노출
+
+```java
+package me.weekbelt.jpashop.api;
+
+@RestController
+@RequiredArgsConstructor
+public class MemberApiController {
+
+    private final MemberService memberService;
+    
+    @GetMapping("/api/v1/members")
+    public List<Member> membersV1() {
+        return memberService.findMembers();
+    }
+
+}
+```
+* 문제점
+  * 엔티티에 프레젠테이션 계층을 위한 로직이 추가된다.
+  * 기본적으로 엔티티의 모든 값이 노출된다.
+  * 응답 스펙을 맞추기 위해 로직이 추가된다. (@JsonIgnore, 별도의 뷰 로직 등등)
+  * 실무에서는 같은 엔티티에 대해 API가 용도에 따라 다양하게 만들어지는데, 한 엔티티에 각각의 API를 위한 프레젠테이션 응답 로직을 담기는 어렵다.
+  * 엔티티가 변경되면 API 스펙이 변한다.
+  * 추가로 컬렉션을 직접 반환하면 향후 API 스펙을 변경하기 어렵다.(별도의 Result 클래스 생성으로 해결)
+* 결론
+  * API 응답 스펙에 맞추어 별도의 DTO를 반환한다.
+
+  참고: 엔티티를 외부에 노출하면 안된다.
+  실무에서는 member엔티티의 데이터가 필요한 API가 계속 증가하게 된다. 어떤 API는 name필드가 필요하지만, 어떤 API는 name필드가 필요없을 수 있다. 결론적으로 엔티티 대신에 API 스펙에 맞는 별도의 DTO를 노출해야 한다.
+
+
+
+
+
+
+
+
+참고 강의:[실전! 스프링 부트와 JPA 활용2 - API 개발과 성능 최적화](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-API%EA%B0%9C%EB%B0%9C-%EC%84%B1%EB%8A%A5%EC%B5%9C%EC%A0%81%ED%99%94/dashboard)
