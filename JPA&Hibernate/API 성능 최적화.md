@@ -1,6 +1,6 @@
 # API 개발 기본
 
-## 회원 등록
+## 회원 등록 API
 
 ```java
 package me.weekbelt.jpashop.api;
@@ -65,3 +65,50 @@ public class MemberApiController {
   참고 : 실무에서는 엔티티를 API 스펙에 노출하면 안된다!
 
 참고 강의:[실전! 스프링 부트와 JPA 활용2 - API 개발과 성능 최적화](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-API%EA%B0%9C%EB%B0%9C-%EC%84%B1%EB%8A%A5%EC%B5%9C%EC%A0%81%ED%99%94/dashboard)
+
+## 회원 수정 API
+
+```java
+    @PutMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberV2(@PathVariable("id") Long id,
+                                               @RequestBody @Valid UpdateMemberRequest request) {
+        memberService.update(id, request.getName());
+        Member findMember = memberService.findOne(id);
+        return new UpdateMemberResponse(findMember.getId(), findMember.getName());
+    }
+
+    @Data
+    static class UpdateMemberRequest {
+        private String name;
+    }
+    
+    @Data
+    @AllArgsConstructor
+    class UpdateMemberResponse {
+        private Long id;
+        private String name;
+    }
+```
+
+* 회원 수정도 DTO를 요청파라미터에 매핑
+
+```java
+package me.weekbelt.jpashop.service;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MemberService {
+
+    /**
+     * 회원수정
+     */
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
+    }
+}
+
+```
+* 변경 감지를 사용해서 데이터를 수정
