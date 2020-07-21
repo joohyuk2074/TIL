@@ -148,8 +148,60 @@ public class MemberApiController {
   참고: 엔티티를 외부에 노출하면 안된다.
   실무에서는 member엔티티의 데이터가 필요한 API가 계속 증가하게 된다. 어떤 API는 name필드가 필요하지만, 어떤 API는 name필드가 필요없을 수 있다. 결론적으로 엔티티 대신에 API 스펙에 맞는 별도의 DTO를 노출해야 한다.
 
+### 회원조회 V2: 응답 값으로 엔티티가 아닌 별도의 DTO 사용
 
+```java
+package me.weekbelt.jpashop.api;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import me.weekbelt.jpashop.domain.Member;
+import me.weekbelt.jpashop.service.MemberService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequiredArgsConstructor
+public class MemberApiController {
+
+    private final MemberService memberService;
+
+    /**
+     * 조회 V2: 응답 값으로 엔티티가 아닌 별도의 DTO를 반환한다.
+     */
+    @GetMapping("/api/v2/members")
+    public Result membersV2() {
+        List<Member> findMembers = memberService.findMembers();
+        List<MemberDto> collect = findMembers.stream()
+                .map(m -> new MemberDto(m.getName()))
+                .collect(Collectors.toList());
+
+        return new Result(collect);
+    }
+
+    @Data
+    @AllArgsConstructor
+    class Result<T> {
+        private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    class MemberDto {
+        private String name;
+    }
+
+}
+
+```
+
+* 엔티티를 DTO로 변환해서 반환한다.
+* 엔티티가 변해도 API 스펙이 변경되지 않는다.
+* 추가로 Result 클래스로 컬렉션을 감싸서 향후 필요한 필드를 추가할 수 있다.
 
 
 

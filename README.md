@@ -20,7 +20,7 @@
 
 ## JPA&Hibernate
 
-- [API 성능 최적화](https://github.com/weekbelt/TIL/blob/master/JPA%26Hibernate/API%20%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94.md)
+- [API 개발 기본 - 회원 API 최적화](https://github.com/weekbelt/TIL/blob/master/JPA%26Hibernate/API%20%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94.md)
 
 ## JAVA
 
