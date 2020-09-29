@@ -55,6 +55,7 @@
 
 - [01. 협력하는 객체들의 공동체](https://github.com/JooHyukGallagher/TIL/blob/master/books/The%20Essence%20of%20Object-Orientation/Chapter01.md)
 - [02. 이상한 나라의 객체](https://github.com/weekbelt/TIL/blob/master/books/The%20Essence%20of%20Object-Orientation/Chapter02.md)
+- [03. 타입과 추상화](https://github.com/weekbelt/TIL/blob/master/books/The%20Essence%20of%20Object-Orientation/Chapter03.md)
 
 ### Clean Code
 
