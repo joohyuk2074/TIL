@@ -5,24 +5,11 @@
 
 # 분류
 
-## Spring MVC
+- ### [SpringFramework](Spring%20MVC/README.md)
 
-- [인터셉터(Interceptor)](https://github.com/JooHyukGallagher/TIL/blob/master/Spring%20MVC/Interceptor.md)
+- ### [SpringSecurity](SpringSecurity/README.md)
 
-## SpringSecurity
-
-- [01.SpringSecurity개요](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/01.%20SpringSecurity%20%EA%B0%9C%EC%9A%94.md)
-- [02.SpringSecurity 설정하기](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/02.%20SpringSecurity%20%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0.md)
-- [03. SpringSecurity를 이용한 로그인 하기](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/03.%20Spring%20Security%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%95%98%EA%B8%B0.md)
-- [04. Spring Security db정보를 이용하여 로그인하기](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/04.%20Spring%20Security%20db%EC%A0%95%EB%B3%B4%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%ED%95%98%EA%B8%B0.md)
-- [CSRF](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/CSRF.md)
-- [세션이 만료시 로그인 유지 방법](https://github.com/JooHyukGallagher/TIL/blob/master/SpringSecurity/Improved%20Persistent%20Login%20Cookie%20Best%20Practice.md)
-
-## JPA&Hibernate
-
-- [API 개발 기본 - 회원 API 최적화](https://github.com/weekbelt/TIL/blob/master/JPA%26Hibernate/API%20%EA%B0%9C%EB%B0%9C%20%EA%B8%B0%EB%B3%B8%20-%20%ED%9A%8C%EC%9B%90%20API%20%EC%B5%9C%EC%A0%81%ED%99%94.md)
-- [API 개발 고급 - 준비](https://github.com/weekbelt/TIL/blob/master/JPA%26Hibernate/API%20%EA%B0%9C%EB%B0%9C%20%EA%B3%A0%EA%B8%89%20-%20%EC%A4%80%EB%B9%84.md)
-- [API 개발 고급 - 지연 로딩과 조회 성능 최적화](https://github.com/weekbelt/TIL/blob/master/JPA%26Hibernate/API%20%EA%B0%9C%EB%B0%9C%20%EA%B3%A0%EA%B8%89%20-%20%EC%A7%80%EC%97%B0%20%EB%A1%9C%EB%94%A9%EA%B3%BC%20%EC%A1%B0%ED%9A%8C%20%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94.md)
+- ### [JPA&Hibernate](JPA&Hibernate/README.md)
 
 ## JAVA
 
