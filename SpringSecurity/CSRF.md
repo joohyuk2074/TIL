@@ -113,3 +113,6 @@ amount=100.00&routingNumber=1234&account=9876&_csrf=4bfd1575-3ad1-4d21-96c7-4ef2
 
 ### CSRF 보호를 사용하는 경우
 일반 사용자가 브라우저에서 처리 할 수있는 모든 요청에 대해 CSRF 보호를 사용하는 것이 좋습니다.
+
+
+참고 자료: https://docs.spring.io/spring-security/site/docs/current/reference/html5/
