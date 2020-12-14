@@ -36,8 +36,11 @@
 
 - [스트림01](https://github.com/JooHyukGallagher/TIL/blob/master/Java/Stream/%EC%8A%A4%ED%8A%B8%EB%A6%BC.md)
 
+## Python
+- ### [코딩 테스트를 위한 파이썬 문법](/Python/README.md)
+
 ## 개발관력 서적
 
- - ### [객체지향의 사실과 오해](/books/The%20Essence%20of%20Object-Orientation/README.md)
+- ### [객체지향의 사실과 오해](/books/The%20Essence%20of%20Object-Orientation/README.md)
 - ### [자바와 JUnit을 활용한 실용주의 단위 테스트](/books/자바와%20Junit을%20활용한%20실용주의%20단위%20테스트/README.md)
 - ### [Clean Code](books/CleanCode/summary.md)
