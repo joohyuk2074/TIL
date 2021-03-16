@@ -1,11 +1,11 @@
 # 도커 데몬
 
-## 도커 데몬이란?
+## 1. 도커 데몬이란?
 dockerd는 컨테이너를 관리하는 영구 프로세스입니다.
 
 <hr>
 
-## 도커의 구조
+## 2. 도커의 구조
 Docker는 클라이언트-서버 구조를 가집니다. 
 Docker 클라이언트는 Docker 컨테이너를 빌드, 실행 및 배포에 대한 무거운 작업을 수행하는 Docker 데몬과 통신을 합니다. Docker 클라이언트와 데몬은 동일한 시스템에서 실행되거나 Docker 클라이언트를 원격 Docker 데몬에 연결할 수 있습니다. 이런 Docker 클라이언트와 데몬은 UNIX 소켓 또는 네트워크 인터페이스를 통해 REST API를 사용하여 통신합니다. 
 
@@ -43,7 +43,7 @@ root     21906  0.0  7.7 911984 77864 ?        Ssl  Mar07   0:54 /usr/bin/docker
 <hr>
 
 
-## 도커 데몬 실행
+## 3. 도커 데몬 실행
 ```
 # service docker stop
 # dockerd
@@ -59,87 +59,58 @@ INFO[2021-03-13T09:30:42.086503239Z] API listen on /var/run/docker.sock
 
 <hr>
 
-## 도커 데몬 설정 
-### 도커 데몬 제어: -H
--H 옵션은 도커 데몬의 API를 사용할 수 있는 방법을 추가합니다. 아무런 옵션을 설정하지 않고 도커데몬을 실행하면 이전에 보았듯이 /usr/bin/docker를 위한 유닉스 소켓인 /var/run/docker.sock을 사용합니다. 즉, 다음의 두 명령어는 차이가 없습니다.
+## 4. 도커 데몬 모니터링
 
+## 5. 스토리지 드라이버
+도커는 특정 스토리지 백엔드 기술을 사용해 도커 컨테이너와 이미지를 저장하고 관리합니다. 일부 운영체제는 도커를 설치할 때 기본적으로 사용하도록 설정된 스토리지 드라이버가 있는데 우분투 같은 데비안 계열 운영체제는 overlay2를 사용합니다. 
+
+`docker info`명령어로 확인해 보겠습니다.
 ```
-# dockerd
-# dockerd -H unix:///var/run/docker.sock
-```
-
-Docker는 데몬과 클라이언트 간의 통신을 할 때 로컬에서는 유닉스 소켓을 사용하고, 원격에서는 TCP 소켓을 사용합니다. 여기에 HTTP REST 형식으로 API가 구현되어 있습니다.
-
-그렇게 때문에 -H에 IP 주소와 포트번호를 입력하면 원격 API인 Docker Remote API로 도커를 제어할 수 있습니다. 
-즉, 도커 클라이언트와는 다르게 로컬에 있는 도커 데몬이 아니더라도 제어할 수 있고 RESTful API 형식을 띠고 있으므로 HTTP 요청으로 도커를 제어할 수 있습니다.
-
-다음과 같이 도커 데몬을 실행하면 호스트에 존재하는 모든 네트워크 인터페이스의 IP 주소와 2375번 포트를 바인딩해 입력을 받습니다.
-```
-# dockerd -H tcp://0.0.0.0:2375
+# docker info | grep "Storage Driver"
+Storage Driver: overlay2
 ```
 
-기존의 Docker 데몬을 정지하고 TCP 소켓으로 다시 실행시켜 API를 테스트해보겠습니다.
+도커 데몬 실행 옵션에서 스토리지 드라이버를 변경할 수도 있습니다.
 ```
-sudo service docker stop
-sudo docker -d -H tcp://0.0.0.0:4243
+# dockerd --storage-driver=devicemapper
 ```
-### 도커 데몬에 보안 적용: -tlsverify
-보안 설정 없이 원격으로 docker daemon에 명령을 보내려고 했는데 
-```
-INFO[2021-03-14T14:02:01.430850526Z] Starting up
-WARN[2021-03-14T14:02:01.431332361Z] Binding to IP address without --tlsverify is insecure and gives root access on this machine to everyone who has access to your network.  host="tcp://54.180.122.240:2375"
-WARN[2021-03-14T14:02:01.431426929Z] Binding to an IP address, even on localhost, can also give access to scripts run in a browser. Be safe out there!  host="tcp://54.180.122.240:2375"
-WARN[2021-03-14T14:02:02.431778298Z] Binding to an IP address without --tlsverify is deprecated. Startup is intentionally being slowed down to show this message  host="tcp://54.180.122.240:2375"
-WARN[2021-03-14T14:02:02.431819389Z] Please consider generating tls certificates with client validation to prevent exposing unauthenticated root access to your network  host="tcp://54.180.122.240:2375"
-WARN[2021-03-14T14:02:02.431831780Z] You can override this by explicitly specifying '--tls=false' or '--tlsverify=false'  host="tcp://54.180.122.240:2375"
-WARN[2021-03-14T14:02:02.431840815Z] Support for listening on TCP without authentication or explicit intent to run without authentication will be removed in the next release  host="tcp://54.180.122.240:2375"
-failed to load listeners: listen tcp 54.180.122.240:2375: bind: cannot assign requested address
-```
-이런 메시지를 띄우면서 dockerd가 실행되지 않았습니다. 확인해보니 --tlsverify없이 IP 주소에 바인딩하는 것은 더이상 사용되지 않는다고 합니다. 따라서 보안 설정을 먼저 한 후에 원격으로 명령을 보내보겠습니다.
 
-보안이 적용돼 있지 않으면 Remote API를 위해 바인딩된 IP 주소와 포트 번호만 알면 도커를 제어할 수 있기 때문에 그것을 방지하기 위함으로 보입니다.
+### 5.1 스토리지 드라이버의 원리
+스토리지 드라이버를 사용하면 컨테이너의 쓰기 가능 계층에 데이터를 생성 할 수 있습니다. 우선 스토리지 드라이버를 알아보기 전에 도커의 이미지와 레이어가 어떻게 구성되는지 살펴 보겠습니다.
 
-따라서 도커 데몬에 TLS 보안을 적용하고, 도커 클라이언트와 Remote API 클라이언트가 인증되지 않으면 도커 데몬을 제어할 수 없도록 설정해 보겠습니다.
+Docker 이미지는 일련의 레이어로 구성됩니다. 각 레이어는 이미지의 Dockerfile에 있는 명령어를 나타냅니다. 다음 Dockerfile을 살펴 보겠습니다.
+```Dockerfile
+FROM ubuntu:18.04
+COPY . /app
+RUN make /app
+CMD python /app/app.py
+```
+이 Dockerfile에는 각각 계층을 생성하는 네 개의 명령이 포함되어 있습니다. 
+
+
+새 컨테이너를 만들 때 기본레이어 위에 새 쓰기 가능한 레이어를 추가하고 이 레이어를 보통 `container layer` 라고 합니다. 새 파일 쓰기, 기존 파일 수정 및 파일 삭제와 같이 실행중인 컨테이너에 대한 모든 변경 사항은 `container layer`에 기록됩니다.
+
+![레이어](https://docs.docker.com/storage/storagedriver/images/container-layers.jpg)
+스토리지 드라이버는 이러한 계층이 서로 상호 작용하는 방식에 대한 세부 정보를 처리합니다. 상황에 따라 장점과 단점이 있는 다양한 스토리지 드라이버를 사용할 수 있습니다.
+
+<br>
+실제로 컨테이너 내부에서 읽기와 새로운 파일 쓰기, 기존의 파일 쓰기 작업이 일어날 때는 드라이버에 따라 Copy-on-Write(Cow)와 같은 개념을 사용합니다. 그래서 이 개념에 대해 간단히 짚고 넘어가겠습니다.
 
 <br>
 
-![도커 데몬에 보안을 적용할 때 사용되는 파일](https://postfiles.pstatic.net/20160622_211/alice_k106_14665947053509lgYO_PNG/%B1%D7%B8%B22.png?type=w2)
+#### 5.1.1 Copy-on-Write(CoW)
+Copy-on-Write는 최대의 효율성을 위해 파일을 공유하고 복사하는 전략입니다. 이미지 내의 하위 레이어에 파일이나 디렉토리가 존재하고 최상위 레이어(쓰기 가능 계층)에 읽기 액세스가 필요한 경우 기존파일만 사용합니다. 반면 다른 레이어가 파일을 처음 수정해야 할 때 파일이 해당 레이어에 복사되고 수정됩니다.
 
-<br>
+![CoW](https://www.oreilly.com/library/view/getting-started-with/9781838645700/assets/dfc9cf05-7ad2-4f58-87a4-4702cd72dbbc.jpg)
 
-#### 1. 서버측 파일 생성
-1. 인증서에 사용될 키를 생성합니다.
+### 5.2 overlayFS
+OverlayFS는 다른 스토리지 드라이버와는 달리 계층화된 이미지 구조를 사용하지 않으며, lowedir이라는 단일화된 이미지 레이어를 사용합니다. 하위 디렉토리를 lowerdir로, 상위 디렉토리를 upperdir로 참조합니다. 통합 뷰는 merged라는 자체 디렉토리를 통해 노출됩니다.
 
-    ```
-    # mkdir keys && cd keys
-    # openssl genrsa -aes256 -out ca-key.pem 4096
-    ```
-
-2. 공용 키(public key)를 생성합니다.
-   ```
-   # openssl req -new -x509 -days 10000 -key ca-key.pem -sha256 -out ca.pem
-   ```
-
-3. 서버 측에서 사용될 키를 생성합니다.
-    ```
-    # openssl genrsa -out server-key.pem 4096
-    ```
-
-4. 서버 측에서 사용될 인증서를 위한 인증 요청서 파일을 생성합니다.
-   ```
-   # openssl req -subj "/CN=$HOST" -sha256 -new -key server-key.pem -out server.csr
-   ```
-
-5. 접속에 사용될 IP 주소를 extfile.cnf 파일로 저장합니다.
-    ```
-    # echo subjectAltName = IP:$HOST, IP:127.0.0.1 > extfile.cnf
-    ```
-
-6. 다음 명령을 입력해 서버 측의 인증서 파일을 생성합니다. 
-
-#### 2. 클라이언트 측에서 사용할 파일 생성
-
-1. 클라이언트 측의 키 파일과 인증 요청 파일을 생성하고, extfile.cnf 파일에 extendedKeyUsage 항목을 추가합니다.
+![overlay구조](https://docs.docker.com/storage/storagedriver/images/overlay_constructs.jpg)
 
 
-참고자료 : <https://docs.docker.com/get-started/overview/>
+### overlay2 에서 컨테이너 저장공간 설정
+
+
+참고자료 : <https://docs.docker.com/get-started/overview/><br>
+참고자료 : <https://www.oreilly.com/library/view/getting-started-with/9781838645700/4da0f0db-5661-4599-91f7-53fc1ec62698.xhtml>

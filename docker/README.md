@@ -1,2 +1,2 @@
 - [Dockerfile](/docker/chapter2-4.md)
-- [Docker daemon](/docker/chapter2-5.md)
+- [Docker daemon & Storage Driver](/docker/chapter2-5.md)
