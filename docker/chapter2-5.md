@@ -68,9 +68,9 @@ INFO[2021-03-16T16:46:51.074444262Z] parsed scheme: "unix"                      
 그런데 원치 않는 로그까지 너무 많이 출력되며, 호스트에 있는 파일을 읽거나 도커 데몬을 포그라운드 상태로 실행해야 한다는 단점이 있어 도커가 제공하는 명령어를 통해 도커 데몬을 모니터링 해보겠습니다.
 
 ### 3.2 events, stats, system df 명령어
-`events`명령어는 도커가 기본으로 제공하는 명령어 입니다. `events`명령어는 도커 데몬에 어떤 일이 일어나고 있는지를 실시간 스트림 로그로 보여줍니다. 
 
 #### 3.2.1 events
+`events`명령어는 도커가 기본으로 제공하는 명령어 입니다. `events`명령어는 도커 데몬에 어떤 일이 일어나고 있는지를 실시간 스트림 로그로 보여줍니다. 
 ```
 # docker events
 ```
@@ -83,6 +83,12 @@ INFO[2021-03-16T16:46:51.074444262Z] parsed scheme: "unix"                      
 # docker events
 2021-03-16T16:58:01.862463109Z image pull ubuntu:latest (name=ubuntu)
 ```
+
+특정  항목에 대한 출력 결과만 보고 싶다면 --filter 옵션을 설정하면 됩니다. 출력의 종류는 container, image, volume, network, plugin, daemon이 있습니다.
+```
+docker events --filter 'type=image'
+``` 
+type외에도 [공식문서](https://docs.docker.com/engine/reference/commandline/events/)를 참조하면 다른 조건들에 대한 출력 결과를 볼 수 있습니다. 
 
 #### 3.2.2 stats
 `stats`  명령어는 실행 중인 모든 컨테이너의 자원 사용량을 스트림으로 출력합니다.
