@@ -1,16 +1,18 @@
 import java.util.Scanner;
 
-public class Main07_Answer {
+public class Main07 {
 
     public static int solution(int n, int[] arr) {
-        int answer = 0, cnt = 0;
-        for (int i=0; i<n; i++) {
+        int answer = 0;
+
+        int acc = 0;
+        for (int i = 0; i < n; i++) {
             if (arr[i] == 1) {
-                cnt++;
-                answer += cnt;
+               acc++;
             } else {
-                cnt = 0;
+                acc = 0;
             }
+            answer += acc;
         }
 
         return answer;
