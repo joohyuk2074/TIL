@@ -38,11 +38,12 @@
 ## CI/CD
 - [Docker](/docker/README.md)
 
-## 개발관력 서적
+## 개발관력 서적 및 인터넷 강의 정리
 
 - ### [객체지향의 사실과 오해](/books/The%20Essence%20of%20Object-Orientation/README.md)
 - ### [자바와 JUnit을 활용한 실용주의 단위 테스트](/books/자바와%20Junit을%20활용한%20실용주의%20단위%20테스트/README.md)
 - ### [Clean Code](books/CleanCode/summary.md)
+- ### [Effective Java](/books/)
 
 ## 코딩테스트 준비
 - ### [자바(Java) 알고리즘 문제풀이 : 코딩테스트 대비](/coding_test/바(Java) 알고리즘 문제풀이 : 코딩테스트 대비/README.md)
