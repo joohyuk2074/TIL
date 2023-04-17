@@ -10,3 +10,4 @@
 - ### [아이템8. finalizer와 cleaner 사용을 피하라](/books/Effective%20Java/Item08.md)
 - ### [아이템9. try-finally보다는 try-with-resources를 사용하라](/books/Effective%20Java/Item09.md)
 - ### [아이템10. equals는 일반 규약을 지켜 재정의하라](/books/Effective%20Java/Item10.md)
+- ### [아이템11. equals를 재정의 하려거든 hashCode도 재정의하라](/books/Effective%20Java/Item11.md)
