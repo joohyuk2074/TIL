@@ -46,3 +46,6 @@
 - ### [Effective Java](/books/Effective%20Java/)
 - ### [Modern Java in Action](/books/Modern%20Java%20in%20Action/README.md)
 - ### [오브젝트](/books/%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8/Chapter01%20%EA%B0%9D%EC%B2%B4%2C%20%EC%84%A4%EA%B3%84.md)
+
+## 면접 인터뷰 관련 질문&답변 정리
+- ### [객체지향 프로그래밍](/%EC%BD%94%EB%94%A9%20%EC%9D%B8%ED%84%B0%EB%B7%B0%20%EC%A0%95%EB%A6%AC/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
