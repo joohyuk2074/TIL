@@ -49,3 +49,6 @@
 
 ## 면접 인터뷰 관련 질문&답변 정리
 - ### [객체지향 프로그래밍](/%EC%BD%94%EB%94%A9%20%EC%9D%B8%ED%84%B0%EB%B7%B0%20%EC%A0%95%EB%A6%AC/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
+
+## 컴퓨터 과학
+- ### [운영체제](/OperatingSystem/README.md)
