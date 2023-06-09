@@ -131,3 +131,6 @@ class BoundedBuffer {
     }
 }
 ```
+
+### 참고자료
+- [쉬운코드](https://www.youtube.com/watch?v=ESXCSNGFVto&list=PLcXyemr8ZeoQOtSUjwaer0VMJSMfa-9G-&index=7)
