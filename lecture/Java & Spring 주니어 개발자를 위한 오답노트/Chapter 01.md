@@ -175,4 +175,155 @@ public static IntStream range(int startInclusive, int endExclusive) {
 ### 7.3 단어 조합은 3개 이하로
 
 <hr>
+
 # 객체 지향적인 코드 짜기 (1): 객체의 종류, 행동
+## 1 객체의 종류
+### 1.1 VO (Value Object)
+모든 변수를 final로 선언해서 immutable한 객체를 VO(Value Object)라고 한다. VO를 만들 떄는 항상 값이 유효한지 체크해줘야 한다.
+```java
+class UserInfo {
+    private final long id;
+    private final String username;
+    private final String email;
+
+    public UserInfo(long id, String username, String email) {
+        assert id > 0;
+        assert StringUtils.isNotEmpty(username);
+        assert EmailValidator.isValid(email);
+        this.id = id;
+        this.username = username;
+        this.email = email;
+    }
+}
+```
+VO는 불변해야 하며, 이는 동일하게 생성된 두 VO는 영원히 동일한 상태임을 유지되어야 한다는 것을 의미한다. 또한 VO는 잘못된 상태로는 만들어 질 수 없다. 따라서 인스턴스화 된 VO는 항상 유효하므로 버그를 줄이는데에도 유용하다.
+### 1.2 DTO (Data Transfer Object)
+DTO는 단순히 데이터 전달에 사용되는 객체를 의미한다. 메소드 간, 클래스 간, 프로세스 간에 데이터를 주고받을 때 사용한다. DTO는 상태를 보호하지 않으며 모든 속성을 노출하므로 획득자와 설정자가 필요 없다. 이는 public 속성으로 충분하다는 뜻이다.
+
+### 1.3 Entity
+Entity는 아래와 같은 조건을 만족해야 한다.
+- 유일한 식별자
+- 수명 주기
+- 저장소에 저장
+- 명명한 생성자와 명령 메서드를 사용해 인스턴스를 만들거나 그 상태를 조작하는 방법을 사용자에게 제공
+
+### 1.4 생성자의 역할
+생성자는 가급적 두개의 역할만 해야한다.
+- 값을 검증
+- 값을 할당
+
+### 1.5 객체를 만들 때의 고민
+객체의 종류에는 3종류만 있는 것이 아니며, 완벽한 분류도 어렵다.
+- VO이면서 Entity 일 수 있다.
+- DTO이면서 PO일 수 있다.
+- 셋 다 아닐 수도 있다.
+
+<br>
+사실 분류보다 '어떤 값을 불변으로 만들 것인가?', '어떤 인터페이스를 노출할 것인가?'에 대한 고민이 더 중요하다.
+
+## 2 디미터 법칙
+#### 디미터 법칙 위반 코드
+```java
+class ComputerManager {
+    public void printSpec(Computer computer) {
+        long size = 0;
+        for (int i = 0; i < computer.getDisks().size(); i++>) {
+            size += computer.getDisks().get(i).getSize();   // Client에서 computer객체에 대해 내부 구현을 알고 있음
+        }
+        System.out.println(size);
+    }
+}
+```
+#### 디미터 법칙을 위반하지 않는 코드
+```java
+class ComputerManager {
+    public void printSpec(Computer computer) {
+        System.out.println(computer.getDiskSize());
+    }
+}
+```
+하지만 위 코드도 좋은코드는 아니다. 디스크 용량이 얼마인지 물어봐서 출력하지 말고. computer객체에 디스크 용량을 출력시키는 일을 시킨다. 
+```java
+class ComputerManager {
+    public void main() {
+        computer.printDiskSize();
+    }
+}
+```
+
+## 3 행동
+Car라는 클래스를 만들때 데이터위주의 사고 보단 행동 위주의 사고를 하는것이 객체 지향적일 확률이 높다.
+#### 데이터 위주의 사고
+```java
+class Car {
+
+    private Frame frame;
+    private Engine engine;
+    private List<Wheel> wheels;
+    private Direction direction;
+    private Speed speed;
+}
+```
+#### 행동 위주의 사고
+```java
+class Car {
+
+    public void drive() {}
+    public void changeDirection() {}
+    public void accelerate(Speed speed) {}
+    public void decelerate(Speed speed) {}
+}
+```
+### 3.1 duck typing
+- 행동이 같다면 같은 클래스로 부르겠다.
+- "duck typing"이라는 용어는 덕 테스트에서 유래했다. 만약 어떤 새가 오리처럼 걷고, 헤엄치고, 꽥꽥거리는 소리를 낸다면 나는 그 새를 오리라고 부를 것이다.
+
+## 4 순환 참조
+순환 참조, 양방향 참조는 되도록 만들지 말자.
+### 4.1 순환참조가 부자연 스러운 이유
+- 순환 의존성 자체가 결합도를 높이는 원인이 된다.
+- 순환참조 때문에 serialize가 불가능해 진다.
+### 4.2 순환참조 해결 방법은 간접 참조로 해결한다
+- Id로 필요할 때마다 찾아오는게 낫다.
+
+#### 순환참조
+```java
+class User {
+
+    private long id;
+    private String username;
+    private List<Feed> feeds;
+}
+
+class Feed {
+
+    private long id;
+    private String content;
+    private User writer;
+
+}
+```
+#### 간접 참조
+```java
+class User {
+
+    private long id;
+    private String username;
+    private List<Feed> feeds;
+}
+
+class Feed {
+
+    private long id;
+    private String content;
+    private long writerId;
+}
+```
+## 5. 더 알아볼 만한 주제
+### 5.1 항상 하면 좋은 고민
+- final 이어야 할까?
+- 이름은 뭘로하는게 좋을까?
+### 5.2 VO의 변경자
+- 새로운 VO를 반환한다.
+- VO의 변경자 이름(eg. changePassword < withNewPassword>)
+### 5.3 Immutable
