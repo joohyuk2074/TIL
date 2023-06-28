@@ -327,3 +327,74 @@ class Feed {
 - 새로운 VO를 반환한다.
 - VO의 변경자 이름(eg. changePassword < withNewPassword>)
 ### 5.3 Immutable
+
+<hr>
+
+# 설계 (1) 의존성이란 무엇인지? (DI vs DIP)
+## 1. SOLID
+### 1.1 Single Response(단일 책임 원칙)
+단일 책임 원칙(single responsibility principle)이란 모든 클래스는 하나의 책임만 가지며, 클래스는 그 책임을 완전히 캡슐화해야 함을 일컫는다. 클래스가 제공하는 모든 기능은 이 책임과 주의 깊게 부합해야 한다. 어떤 클래스나 모듈은 변경하려는 단 하나의 이유만을 가져야 한다고 결론 짓는다. 코드 라인이 100줄 이상이라면 의심해 봐야 한다.
+### 1.2 Open Closed(개방-폐쇄 원칙)
+개방-폐쇄 원칙(OCP, Open-Closed Principle)은 '소프트웨어 개체(클래스, 모듈, 함수 등등)는 확장에 대해 열려 있어야 하고, 수정에 대해서는 닫혀 있어야 한다'는 프로그래밍 원칙이다. 개방-폐쇄 원칙이 잘 적용되면, 기능을 추가하거나 변경해야 할 때 이미 제대로 동작하고 있던 원래 코드를 변경하지 않아도, 기존의 코드에 새로운 코드를 추가함으로써 기능의 추가나 변경이 가능하다. 이 원칙을 무시하고 프로그래밍을 한다면, 객체 지향 프로그래밍의 가장 큰 장점인 유연성, 재사용성, 유지보수성 등을 결코 얻을 수 없다.
+### 1.3 Liskov substitution(리스코프 치환 원칙)
+컴퓨터 프로그램에서 자료형 S가 자료형 T의 하위형이라면 필요한 프로그램의 속성(정확성, 수행하는 업무 등)의 변경 없이 자료형 T의 객체를 자료형 S의 객체로 교체(치환)할 수 있어야 한다는 원칙이다.
+#### 상위 클래스와 하위 클래스 사이의 계약이 깨지는 경우
+```java
+@Getter
+@Setter
+@AllArgsConstructor
+class Rectangle {
+
+    protected long width;
+    protected long height;
+}
+
+class Square extends Rectangle {
+    public Square(long lenght) {
+        super(lenght, lenght);
+    }
+}
+```
+
+```java
+Rectangle square = new Sqare(10);
+square.setHeight(5);
+```
+### 1.4 Interface-Segregation (인터페이스 분리 원칙)
+인터페이스 분리 원칙은 클라이언트가 자신이 이용하지 않는 메서드에 의존하지 않아야 한다는 원칙이다. 인터페이스는 한마디로 "이 기능을 사용하고 싶다면 이 방법을 사용하세요."라고 알려주는 것이다. 결국 public 메서드가 인터페이스가 된다.
+
+```java
+class User {
+    
+    private String email;
+    private String password;
+    private boolean active;
+
+    public void inactivate() {
+        this.active = false;
+    }
+
+    public boolean equalsPassword(String plainPassword) {
+        // do something
+        String secretPassword = encode(plainPassword);
+        return password.equals(secretPassword);
+    }
+
+    private String encode(String password) {
+        return Encryptor.encode(password);
+    }
+}
+```
+위 User클래스를 보면 user를 비활성화시키는 inactivate메서드가 있고 비밀번호가 일치하는지 비교하는 equalsPassword메서드가 있는데 이 두개는 public으로 인터페이스다. 하지만 encode는 User를 사용하는 입장에서는 알 필요가 없기 때문에 private접근 제한자이고 인터페이스가 아니다.
+
+<br>
+
+결국 인터페이스 분리 원칙은 인터페이스를 적재적소에 잘 분리하라는 이야기 입니다.
+
+### 1.5 Dependency Inversion(의존성 역전 원칙)
+- 상위 모듈은 하위 모듈에 의존해서는 안된다. 상위 모듈과 하위 모듈 모두 추상화에 의존해야 한다.
+- 추상화는 세부 사항에 의존해서는 안된다. 세부사항이 추상화에 의존해야 한다.
+## 2. 의존성
+생성자 의존성 주입이 7개 이상 넘어가거나 파라미터 의존성 주입이 4개 이상 넘어 간다면 클래스 분할이나 메서드 분할을 고려해봐야 한다는 신호이다.
+## 3. 의조성 조언
+## 4. CQRS
