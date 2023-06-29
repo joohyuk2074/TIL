@@ -396,5 +396,209 @@ class User {
 - 추상화는 세부 사항에 의존해서는 안된다. 세부사항이 추상화에 의존해야 한다.
 ## 2. 의존성
 생성자 의존성 주입이 7개 이상 넘어가거나 파라미터 의존성 주입이 4개 이상 넘어 간다면 클래스 분할이나 메서드 분할을 고려해봐야 한다는 신호이다.
-## 3. 의조성 조언
+## 3. 의존성 조언
+### 3.1 의존성을 드러내라
+내가 모르는 객체를 사용하다보면 어쩔 때는 동작하고 어쩔때는 동작을 안하는 경우가 있는데 이런경우 보통 내부에 감춰진 의존성이 있는 경우가 많다.
+
+예를들어 사용자가 로그인하면 로그인 시간을 기록 하는 코드가 있다.
+#### 의존성이 숨겨진 코드
+```java
+class User {
+    private long lastLoginTimestamp;
+
+    public void login() {
+        this.lastLoginTimestamp = Clock.systemUTC().millis();
+    }
+}
+```
+내부 로직을 보면 login은 분명 Clock에 의존적이다.
+
+```
+user.login();
+```
+하지만 외부에서 보면 login이 시간에 의존하고 있음을 알 수가 없음. login이 제대로 작동하지 않을경우 계속 드릴 다운하면서 원인 분석을 해야하니 디버깅이 길어진다.
+
+그리고 이런 경우 테스트하기가 난해해 진다. 로그인을 했을때 로그인 시각이 테스트할때의 시간과 같은지 테스트를 하려고하는데 당연히 로그인시점의 시간과 테스트시점의 시간이 다르다. 또한 로그인했을 당시의 호출 시간을 알 방법도 없다. 따라서 이 테스트는 만들기도 어렵고 일관되게 유지하기도 힘들다.
+```java
+class UserTest {
+
+    @Test
+    public void login_테스트() {
+        // given
+        User user = new User();
+
+        // when
+        user.login();
+
+        // then
+        assertThat(user.getLastLoginTimestamp()).isEqualTo(???);
+    }
+}
+```
+일반적으로 개발자들이 의존성을 실수로 숨기게 되는 흔한 케이스가 있습니다.
+- 시간
+- 랜덤 (Random)
+이 두개의 경우는 실행할 때마다 변하는 값이다.
+
+## 3.2 변하는 값은 주입 받아라
+```java
+class User {
+
+    private long lastLoginTimestamp;
+
+    public void login(Clock clock) {
+        // ....
+        this.lastLoginTimestamp = clock.millis();
+    }
+}
+```
+```java
+user.login(Clock.systemUTC())
+```
+외부에서 보면 login은 분명히 시간이 필요한 메서드라는 것을 알 수 있고 테스트도 쉬워진다. 
+
+```java
+class UserTest {
+
+    @Test
+    public void login_테스트() {
+        // given
+        User user = new User();
+        Clock clock = Clock.fixed(Instant.parse("2000-01-01T00:00:00.00Z"), ZoneId.of("UTC"));
+
+        // when
+        user.login(clock);
+
+        // then
+        assertThat(user.getLastLoginTimestamp()).isEqualTo(946684800000L);
+    }
+}
+```
+의존성이 제대로 풀려있지 않다면 테스트가 힘들기 때문에 테스트하기가 쉽다면 좋은 코드일 확률이 높다.
+
+그렇지만 완전히 해결된 것은 아니다. login을 해야하는 부분에서 Clock이라는 숨겨진 의존성을 사용해야 하기 때문이다. 같은 문제각 발생한 것이다.
+
+```java
+class UserService {
+
+    public void login(User user) {
+        // ...
+        user.login(Clock.systemUTC());
+    }
+}
+```
+user.login은 Clock을 의존한다는 것은 알겠는데 UserService의 login메소드는 Clock을 또 여전히 감추고 있다.
+
+```java
+class UserServiceTest {
+    @Test
+    public void login_테스트() {
+        // given
+        User user = new User();
+        UserService userService = new UserService();
+
+        // when
+        userService.login(user);
+
+        // then;
+        assertThat(user.getLastLoginTimestamp()).isEqualTo(???);
+    }
+}
+```
+마찬가지로 UserService는 테스트하기 어렵다는 문제를 가지고 있다. 이런식으로 결국엔 폭탄돌리기를 하고있는 것이다. 결국엔 누군가는 고정된 의존성을 사용해야 되고 이걸 주입해 줘야 되기 때문이다. 그래도 다행인점은 의존성을 제대로 처리하지 않으면, 테스트하기 힘들다는 결론을 알 수 있다.
+
+### 3.3 변하는 값을 추상화시켜라
+결론적으로 변하는 값에대한 가장 괜찮은 접근법은 런타임 의존성과 컴파일 타임 의존성을 다르게 하는 것이다.
+
+```java
+interface ClockHolder {
+
+    long getMillis();
+}
+
+@Getter
+class User {
+
+    private long lastLoginTimestamp;
+ 
+    public void login(ClockHolder clockHolder) {
+        // ...
+        this.lastLoginTimestamp = clockHolder.getMillis();
+    }
+}
+
+@RequiredArgsConstructor
+class UserService {
+
+    private final ClockHolder clockHolder;
+
+    public void login(User user) {
+        // ...
+        user.login(clockHolder.getMillis());
+    }
+}
+```
+만약 ClockHolder라는 인터페이스를 만들고 현재시간을 알려주는 getMillis메서드를 정의했다고 가정하자. User는 Clock에 의존하는게 아니라 ClockHolder를 의존하게 바뀌었고 UserService에서 ClockHolder는 UserService의 멤버 변수로 들어갔다. 이렇게 되면 User는 어떤 ClockHolder가 올지 모르지만 알필요 없고 컴파일 시 ClockHolder에만 의존하면 된다.
+
+결국 실제 배포환경과 테스트환경에서 사용할 구현체를 각각 만들어서 런타임 마다 다른 구현체를 사용하도록 할 수 있다.
+#### 프로덕션용
+```java
+class SystemClockHolder implements ClockHolder {
+
+    @Override
+    public long getMillis() {
+        return Clock.systemUTC().millis();
+    }
+}
+```
+
+#### 테스트용
+```java
+class TextClockHolder implements ClockHolder {
+
+    private Clock clock;
+
+    @Override
+    public long getMillis() {
+        return clock.millis();
+    }
+}
+```
+
+이 테스트 코드는 쉽게 깨지지 않고 항상 같은 결과를 주는 테스트 코드가 된다.
+```java
+class UserServiceTest {
+    @Test
+    public void login_테스트() {
+        // given
+        Clock clock = Clock.fixed(Instant.parse("2000-01-01T00:00:00.00Z"), ZoneId.of("UTC"));
+        User user = new User();
+        UserService userService = new UserService(new TestClockHolder(clock));
+
+        // when
+        userService.login(user);
+
+        // then;
+        assertThat(user.getLastLoginTimestamp()).isEqualTo(9466840000L);
+    }
+}
+```
+지금 까지 한 행위는 <b>의존성 역전 원리</b>를 이용하여 <b>컴파일 타임과 런타임</b>의 의존성을 다르게 했다. 이렇게 의존성을 추상화 시키는 방식은 매우 중요한 기법이다!.
 ## 4. CQRS
+Command and Query Responsibility Segregation의 약자로 명령과 질의를 분리하라는 뜻인데 일단 명령이랑 질의가 뭔지부터 확인해보자. 
+- Command(명령): 명령은 쉽게 말해서 일을 시키는 메서드를 의미한다. 명령 메서드는 객체의 상태를 변경시킨다는 특징이 있고 return값을 가지지 않는다.
+- Query(질의): 질의는 쉽게 말해서 상태만 물어보는 메서드다. 그래서 질의 메서드는 객체의 상태를 변화시켜선 안된다.
+다시 말해 CQRS는 명령과 질의를 철저히 분리시키는 이론이라 보면 된다.
+> 하나의 메소드는 명령이나 쿼리여야하며, 두 가지 기능을 모두 가져서는 안된다. 명령은 객체의 상태를 변경할 수 있지만, 값을 반환하지 않는다. 쿼리는 값을 반환하지만 객체를 변경하지 않는다.
+## 5. 더 알아볼 만한 주제
+### 5.1 정답이 없다.
+- Shotgun surgery: 기능 산재 - 모아둬야 할 것을 분할해서 발생
+- Divergent change: 수정 산발 - 분할해야 할 것을 모아놔서 발생
+### 5.2 리팩토링
+working effectively with legacy code책 추천
+### 5.3 다양한 설계 조언
+- Cargo cult programming: 이해는 하지 않고 그냥 무작정 따라서 프로그래밍하는 것.
+- DRY: Don't Repeat Yourself: 똑같은 일을 두 번 하지 마라.
+- KISS: Keep it simple, stupid: 단순하게 하라.
+- YAGNI: You Ain't Gonna Need It: 필요할 때 해라.
+- DAMP: Descriptive And Meaningful Phrases: 서술적이고 의미 있으며 구어적으로 작성해라. (테스트 코드 한정)
