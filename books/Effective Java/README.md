@@ -13,3 +13,4 @@
 - ### [아이템11. equals를 재정의 하려거든 hashCode도 재정의하라](/books/Effective%20Java/Item11.md)
 - ### [아이템12. toString을 항상 재정의하라](/books/Effective%20Java/Item12.md)
 - ### [아이템14. Comparable을 구현할지 고민하라](/books/Effective%20Java/Item14.md)
+- ### [아이템 15. 클래스와 멤버의 접근 권한을 최소화하라](/books/Effective%20Java/Item14.md)
